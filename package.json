@@ -3,13 +3,18 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "node server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "build-themes": "devextreme build",
-    "postinstall": "npm run build-themes"
+    "postinstall": "npm run build-themes",
+    "heroku-postbuild": "ng build --prod"
   },
+  "engines": {
+    "node": "14.16.1",
+    "npm": "6.14.12"
+ },
   "private": true,
   "dependencies": {
     "@angular/animations": "~13.2.0",
