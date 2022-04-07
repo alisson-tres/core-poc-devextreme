@@ -1,0 +1,207 @@
+<div class="dashboard">
+  <dx-responsive-box>
+    <dxi-row [ratio]="1"></dxi-row>
+    <dxi-row [ratio]="1"></dxi-row>
+    <dxi-row [ratio]="3"></dxi-row>
+    <dxi-col [ratio]="1"></dxi-col>
+
+    <dxi-item class="box-row">
+      <!--Search-->
+      <dxi-location [row]="0" [col]="0"></dxi-location>
+      <dx-responsive-box singleColumnScreen="xs sm">
+        <dxi-row [ratio]="1"></dxi-row>
+        <dxi-col [ratio]="1"></dxi-col>
+        <dxi-col [ratio]="1"></dxi-col>
+        <dxi-col [ratio]="1"></dxi-col>
+        <dxi-col [ratio]="1"></dxi-col>
+        <dxi-col [baseSize]="30" [ratio]="0.3" [shrink]="2"></dxi-col>
+
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="0"></dxi-location>
+
+          <dx-drop-down-box label="Empresa" labelMode="floating">
+          </dx-drop-down-box>
+        </dxi-item>
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="1"></dxi-location>
+
+          <dx-drop-down-box label="Motoristas" labelMode="floating">
+          </dx-drop-down-box>
+        </dxi-item>
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="2"></dxi-location>
+
+          <dx-drop-down-box label="Veículos" labelMode="floating">
+          </dx-drop-down-box>
+        </dxi-item>
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="3"></dxi-location>
+
+          <dx-responsive-box singleColumnScreen="xs sm">
+            <dxi-row [ratio]="1"></dxi-row>
+            <dxi-col [ratio]="1"></dxi-col>
+            <dxi-col [ratio]="1"></dxi-col>
+
+            <dxi-item>
+              <dxi-location [row]="0" [col]="0"></dxi-location>
+              <!---->
+              <dx-date-box
+                type="date"
+                label="Período"
+                labelMode="static"
+              ></dx-date-box>
+            </dxi-item>
+            <dxi-item>
+              <dxi-location [row]="0" [col]="1"></dxi-location>
+              <!---->
+              <dx-date-box
+                type="date"
+                label=" "
+                labelMode="static"
+              ></dx-date-box>
+            </dxi-item>
+          </dx-responsive-box>
+        </dxi-item>
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="4"></dxi-location>
+
+          <dx-button
+            icon="search"
+            stylingMode="contained"
+            type="default"
+            class="search-button"
+          ></dx-button>
+        </dxi-item>
+      </dx-responsive-box>
+    </dxi-item>
+
+    <dxi-item>
+      <!--Counts-->
+      <dxi-location [row]="1" [col]="0"></dxi-location>
+      <dx-responsive-box singleColumnScreen="xs sm">
+        <dxi-row></dxi-row>
+        <dxi-col></dxi-col>
+        <dxi-col></dxi-col>
+        <dxi-col></dxi-col>
+        <dxi-col></dxi-col>
+
+        <dxi-item class="box-row box-item">
+          <dxi-location [row]="0" [col]="0"></dxi-location>
+
+          <dx-responsive-box singleColumnScreen="xs sm">
+            <dxi-row></dxi-row>
+            <dxi-col></dxi-col>
+            <dxi-col></dxi-col>
+
+            <dxi-item>
+              <dxi-location [row]="0" [col]="0"></dxi-location>
+              <!---->
+              <dx-responsive-box singleColumnScreen="xs sm">
+                <dxi-row></dxi-row>
+                <dxi-row></dxi-row>
+                <dxi-col></dxi-col>
+
+                <dxi-item>
+                  <dxi-location [row]="0" [col]="0"></dxi-location>
+                  <!---->
+                  Alto risco
+                  <br />
+                  <hr />
+                </dxi-item>
+                <dxi-item>
+                  <dxi-location [row]="1" [col]="0"></dxi-location>
+                  <!---->
+                  0 Veículos<br />0 motoristas
+                </dxi-item>
+              </dx-responsive-box>
+            </dxi-item>
+            <dxi-item>
+              <dxi-location [row]="0" [col]="1"></dxi-location>
+              <!---->
+              0 alertas
+            </dxi-item>
+          </dx-responsive-box>
+        </dxi-item>
+
+        <dxi-item class="box-row box-item">
+          <dxi-location [row]="0" [col]="1"></dxi-location>
+
+          Médio risco
+        </dxi-item>
+
+        <dxi-item class="box-row box-item">
+          <dxi-location [row]="0" [col]="2"></dxi-location>
+
+          Baixo risco
+        </dxi-item>
+
+        <dxi-item class="box-row box-item">
+          <dxi-location [row]="0" [col]="3"></dxi-location>
+
+          Sem risco
+        </dxi-item>
+      </dx-responsive-box>
+    </dxi-item>
+
+    <dxi-item class="box-row">
+      <!--Alerts-->
+      <dxi-location [row]="2" [col]="0"></dxi-location>
+      <dx-responsive-box singleColumnScreen="xs sm">
+        <dxi-row [ratio]="1"></dxi-row>
+        <dxi-col [ratio]="1" [baseSize]="150"></dxi-col>
+
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="0"></dxi-location>
+          <!---->
+          <dx-data-grid
+            id="gridContainer"
+            [dataSource]="customers"
+            keyExpr="ID"
+            [columns]="['CompanyName', 'City', 'State', 'Phone', 'Fax']"
+            [showBorders]="true"
+            [focusedRowEnabled]="false"
+            [hoverStateEnabled]="true"
+          >
+            <dxo-scrolling rowRenderingMode="virtual"> </dxo-scrolling>
+            <!--Pagination-->
+            <dxo-paging [pageSize]="4"> </dxo-paging>
+            <dxo-pager
+              [visible]="true"
+              [allowedPageSizes]="[5, 10]"
+              [showPageSizeSelector]="true"
+              [showInfo]="true"
+              [showNavigationButtons]="true"
+            >
+            </dxo-pager>
+            <!--Editing-->
+            <dxo-editing
+              mode="cell"
+              [allowUpdating]="true"
+              [allowAdding]="true"
+              [allowDeleting]="true"
+            >
+            </dxo-editing>
+            <dxo-selection mode="multiple"></dxo-selection>
+            <!--Search & Filtering-->
+            <dxo-search-panel
+              [visible]="true"
+              [width]="240"
+              placeholder="Pesquisar..."
+            ></dxo-search-panel>
+            <dxo-filter-row
+              [visible]="true"
+              [applyFilter]="true"
+            ></dxo-filter-row>
+            <!--Export Data-->
+          </dx-data-grid>
+        </dxi-item>
+
+        <dxi-item class="box-item">
+          <dxi-location [row]="0" [col]="1"></dxi-location>
+
+          monitorações
+        </dxi-item>
+      </dx-responsive-box>
+    </dxi-item>
+  </dx-responsive-box>
+</div>
