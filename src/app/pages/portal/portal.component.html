@@ -19,19 +19,126 @@
         <dxi-item class="box-item">
           <dxi-location [row]="0" [col]="0"></dxi-location>
 
-          <dx-drop-down-box label="Empresa" labelMode="floating">
+          <!-- Company Dropdown select -->
+          <dx-drop-down-box
+            label="Empresa"
+            labelMode="floating"
+            valueExpr="ID"
+            displayExpr="name"
+            [dataSource]="companies"
+            [showClearButton]="true"
+            [(value)]="companyBoxValue"
+            (onValueChanged)="syncTreeViewSelection(companyBoxValue)"
+          >
+            <div *dxTemplate="let data of 'content'">
+              <dx-tree-view
+                dataStructure="plain"
+                keyExpr="ID"
+                parentIdExpr="categoryId"
+                selectionMode="single"
+                displayExpr="name"
+                showCheckBoxesMode="true"
+                selectionMode="multiple"
+                [searchEnabled]="true"
+                [dataSource]="companies"
+                [selectByClick]="true"
+                (onContentReady)="$event.component.selectItem(companyBoxValue)"
+                (onItemSelectionChanged)="companyItemSelectionChanged($event)"
+              >
+              </dx-tree-view>
+            </div>
           </dx-drop-down-box>
         </dxi-item>
         <dxi-item class="box-item">
           <dxi-location [row]="0" [col]="1"></dxi-location>
 
-          <dx-drop-down-box label="Motoristas" labelMode="floating">
+          <dx-drop-down-box
+            label="Motoristas"
+            labelMode="floating"
+            valueExpr="ID"
+            displayExpr="name"
+            [dataSource]="drivers"
+            [showClearButton]="true"
+            [(value)]="driverBoxValue"
+            [(opened)]="isDriverBoxOpened"
+            [deferRendering]="false"
+            [displayExpr]="gridBox_displayExpr"
+          >
+            <div *dxTemplate="let data of 'content'">
+              <dx-data-grid
+                height="100%"
+                [dataSource]="drivers"
+                [hoverStateEnabled]="true"
+                [columns]="['name']"
+                [showColumnHeaders]="false"
+                [(selectedRowKeys)]="driverBoxValue"
+              >
+                <dxo-selection mode="multiple"></dxo-selection>
+                <!--Pagination-->
+                <dxo-paging [pageSize]="5"> </dxo-paging>
+                <dxo-pager
+                  [visible]="true"
+                  [allowedPageSizes]="[5]"
+                  [showPageSizeSelector]="false"
+                  [showInfo]="true"
+                  [showNavigationButtons]="true"
+                >
+                </dxo-pager>
+                <!--Search & Filtering-->
+                <dxo-search-panel
+                  [visible]="true"
+                  [width]="240"
+                  placeholder="Pesquisar..."
+                ></dxo-search-panel>
+              </dx-data-grid>
+            </div>
           </dx-drop-down-box>
         </dxi-item>
+
         <dxi-item class="box-item">
           <dxi-location [row]="0" [col]="2"></dxi-location>
 
-          <dx-drop-down-box label="Veículos" labelMode="floating">
+          <dx-drop-down-box
+            label="Veículos"
+            labelMode="floating"
+            valueExpr="ID"
+            displayExpr="name"
+            [dataSource]="vehicles"
+            [showClearButton]="true"
+            [(value)]="vehicleBoxValue"
+            [(opened)]="isVehicleBoxOpened"
+            [deferRendering]="false"
+            [displayExpr]="gridBox_displayExpr"
+          >
+            <div *dxTemplate="let data of 'content'">
+              <dx-data-grid
+                height="100%"
+                [dataSource]="vehicles"
+                [hoverStateEnabled]="true"
+                [columns]="['name']"
+                [showColumnHeaders]="false"
+                [(selectedRowKeys)]="driverBoxValue"
+              >
+                <dxo-selection mode="multiple"></dxo-selection>
+                <!--Pagination-->
+                <dxo-paging [pageSize]="5"> </dxo-paging>
+                <dxo-pager
+                  [visible]="true"
+                  [allowedPageSizes]="[5]"
+                  [showPageSizeSelector]="false"
+                  [showInfo]="true"
+                  [showNavigationButtons]="true"
+                >
+                </dxo-pager>
+                <!--Search & Filtering-->
+                <dxo-search-panel
+                  [visible]="true"
+                  [width]="240"
+                  placeholder="Pesquisar..."
+                ></dxo-search-panel>
+              </dx-data-grid>
+            </div>
+            >
           </dx-drop-down-box>
         </dxi-item>
         <dxi-item class="box-item">
@@ -104,42 +211,286 @@
                 <dxi-item>
                   <dxi-location [row]="0" [col]="0"></dxi-location>
                   <!---->
-                  Alto risco
-                  <br />
-                  <hr />
+                  <h1
+                    style="
+                      color: #ff5b5b;
+                      font-size: 1.3em;
+                      text-transform: uppercase;
+                      font-weight: 700;
+                      padding: 0.6em;
+                      border-bottom: 1px solid #ebeff5;
+                    "
+                  >
+                    Alto risco
+                  </h1>
                 </dxi-item>
                 <dxi-item>
                   <dxi-location [row]="1" [col]="0"></dxi-location>
                   <!---->
-                  0 Veículos<br />0 motoristas
+                  <div style="padding-left: 10px">
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >31
+                      </span>
+                      Veículos
+                    </span>
+                    <br />
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >16
+                      </span>
+                      Motoristas
+                    </span>
+                  </div>
                 </dxi-item>
               </dx-responsive-box>
             </dxi-item>
             <dxi-item>
               <dxi-location [row]="0" [col]="1"></dxi-location>
               <!---->
-              0 alertas
+
+              <dx-pie-chart
+                id="pie"
+                type="doughnut"
+                [dataSource]="highRisksAlerts"
+              >
+                <dxi-series
+                  argumentField="alertType"
+                  valueField="val"
+                ></dxi-series>
+
+                <dxo-legend [visible]="false"></dxo-legend>
+                <dxo-size [height]="135"></dxo-size>
+              </dx-pie-chart>
             </dxi-item>
           </dx-responsive-box>
         </dxi-item>
 
+        <!---Medium--->
         <dxi-item class="box-row box-item">
           <dxi-location [row]="0" [col]="1"></dxi-location>
 
-          Médio risco
+          <dx-responsive-box singleColumnScreen="xs sm">
+            <dxi-row></dxi-row>
+            <dxi-col></dxi-col>
+            <dxi-col></dxi-col>
+
+            <dxi-item>
+              <dxi-location [row]="0" [col]="0"></dxi-location>
+              <!---->
+              <dx-responsive-box singleColumnScreen="xs sm">
+                <dxi-row></dxi-row>
+                <dxi-row></dxi-row>
+                <dxi-col></dxi-col>
+
+                <dxi-item>
+                  <dxi-location [row]="0" [col]="0"></dxi-location>
+                  <!---->
+                  <h1
+                    style="
+                      color: #fbb630;
+                      font-size: 1.3em;
+                      text-transform: uppercase;
+                      font-weight: 700;
+                      padding: 0.6em;
+                      border-bottom: 1px solid #ebeff5;
+                    "
+                  >
+                    Médio risco
+                  </h1>
+                </dxi-item>
+                <dxi-item>
+                  <dxi-location [row]="1" [col]="0"></dxi-location>
+                  <!---->
+                  <div style="padding-left: 10px">
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >2
+                      </span>
+                      Veículos
+                    </span>
+                    <br />
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >1
+                      </span>
+                      Motoristas
+                    </span>
+                  </div>
+                </dxi-item>
+              </dx-responsive-box>
+            </dxi-item>
+            <dxi-item>
+              <dxi-location [row]="0" [col]="1"></dxi-location>
+              <!---->
+
+              <dx-pie-chart
+                id="pie"
+                type="doughnut"
+                [dataSource]="mediumRisksAlerts"
+              >
+                <dxi-series
+                  argumentField="alertType"
+                  valueField="val"
+                ></dxi-series>
+
+                <dxo-legend [visible]="false"></dxo-legend>
+                <dxo-size [height]="135"></dxo-size>
+              </dx-pie-chart>
+            </dxi-item>
+          </dx-responsive-box>
         </dxi-item>
 
+        <!---Low--->
         <dxi-item class="box-row box-item">
           <dxi-location [row]="0" [col]="2"></dxi-location>
 
-          Baixo risco
+          <dx-responsive-box singleColumnScreen="xs sm">
+            <dxi-row></dxi-row>
+            <dxi-col></dxi-col>
+            <dxi-col></dxi-col>
+
+            <dxi-item>
+              <dxi-location [row]="0" [col]="0"></dxi-location>
+              <!---->
+              <dx-responsive-box singleColumnScreen="xs sm">
+                <dxi-row></dxi-row>
+                <dxi-row></dxi-row>
+                <dxi-col></dxi-col>
+
+                <dxi-item>
+                  <dxi-location [row]="0" [col]="0"></dxi-location>
+                  <!---->
+                  <h1
+                    style="
+                      color: #99cb77;
+                      font-size: 1.3em;
+                      text-transform: uppercase;
+                      font-weight: 700;
+                      padding: 0.6em;
+                      border-bottom: 1px solid #ebeff5;
+                    "
+                  >
+                    Baixo risco
+                  </h1>
+                </dxi-item>
+                <dxi-item>
+                  <dxi-location [row]="1" [col]="0"></dxi-location>
+                  <!---->
+                  <div style="padding-left: 10px">
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >2
+                      </span>
+                      Veículos
+                    </span>
+                    <br />
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >1
+                      </span>
+                      Motoristas
+                    </span>
+                  </div>
+                </dxi-item>
+              </dx-responsive-box>
+            </dxi-item>
+            <dxi-item>
+              <dxi-location [row]="0" [col]="1"></dxi-location>
+              <!---->
+
+              <dx-pie-chart
+                id="pie"
+                type="doughnut"
+                [dataSource]="lowRisksAlerts"
+              >
+                <dxi-series
+                  argumentField="alertType"
+                  valueField="val"
+                ></dxi-series>
+
+                <dxo-legend [visible]="false"></dxo-legend>
+                <dxo-size [height]="135"></dxo-size>
+              </dx-pie-chart>
+            </dxi-item>
+          </dx-responsive-box>
         </dxi-item>
 
+        <!---None--->
         <dxi-item class="box-row box-item">
           <dxi-location [row]="0" [col]="3"></dxi-location>
 
-          Sem risco
+          <dx-responsive-box singleColumnScreen="xs sm">
+            <dxi-row></dxi-row>
+            <dxi-col></dxi-col>
+            <dxi-col></dxi-col>
+
+            <dxi-item>
+              <dxi-location [row]="0" [col]="0"></dxi-location>
+              <!---->
+              <dx-responsive-box singleColumnScreen="xs sm">
+                <dxi-row></dxi-row>
+                <dxi-row></dxi-row>
+                <dxi-col></dxi-col>
+
+                <dxi-item>
+                  <dxi-location [row]="0" [col]="0"></dxi-location>
+                  <!---->
+                  <h1
+                    style="
+                      color: #2e57a5;
+                      font-size: 1.3em;
+                      text-transform: uppercase;
+                      font-weight: 700;
+                      padding: 0.6em;
+                      border-bottom: 1px solid #ebeff5;
+                    "
+                  >
+                    Sem risco
+                  </h1>
+                </dxi-item>
+                <dxi-item>
+                  <dxi-location [row]="1" [col]="0"></dxi-location>
+                  <!---->
+                  <div style="padding-left: 10px">
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >2
+                      </span>
+                      Veículos
+                    </span>
+                    <br />
+                    <span style="color: #8892a0">
+                      <span style="font-weight: 900; font-size: 1.8em"
+                        >1
+                      </span>
+                      Motoristas
+                    </span>
+                  </div>
+                </dxi-item>
+              </dx-responsive-box>
+            </dxi-item>
+            <dxi-item>
+              <dxi-location [row]="0" [col]="1"></dxi-location>
+              <!---->
+
+              <dx-pie-chart
+                id="pie"
+                type="doughnut"
+                [dataSource]="noRisksAlerts"
+              >
+                <dxi-series
+                  argumentField="alertType"
+                  valueField="val"
+                ></dxi-series>
+
+                <dxo-legend [visible]="false"></dxo-legend>
+                <dxo-size [height]="135"></dxo-size>
+              </dx-pie-chart>
+            </dxi-item>
+          </dx-responsive-box>
         </dxi-item>
+
       </dx-responsive-box>
     </dxi-item>
 

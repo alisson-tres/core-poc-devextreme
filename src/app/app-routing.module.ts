@@ -5,7 +5,7 @@ import { AuthGuardService } from './shared/services';
 import { HomeComponent } from './pages/home/home.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
-import { DxBoxModule, DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxDropDownBoxModule, DxFormModule, DxResponsiveBoxModule, DxTreeViewModule } from 'devextreme-angular';
+import { DxBoxModule, DxButtonModule, DxChartModule, DxDataGridModule, DxDateBoxModule, DxDropDownBoxModule, DxFormModule, DxPieChartModule, DxResponsiveBoxModule, DxTreeViewModule } from 'devextreme-angular';
 import { PortalComponent } from './pages/portal/portal.component';
 
 const routes: Routes = [
@@ -50,6 +50,8 @@ const routes: Routes = [
     component: ChangePasswordFormComponent,
     canActivate: [ AuthGuardService ]
   },
+  /* Mais exemplos com tabelas */
+
   /* Esse aqui tem que ser por último sempre para não dar conflito */
   {
     path: '**',
@@ -64,11 +66,11 @@ const routes: Routes = [
     DxResponsiveBoxModule,
     DxDataGridModule,
     DxFormModule,
-    //DxChartModule,
     DxDropDownBoxModule,
     DxTreeViewModule,
     DxDateBoxModule,
-    DxButtonModule
+    DxButtonModule,
+    DxPieChartModule
   ],
   providers: [AuthGuardService],
   exports: [RouterModule],
